@@ -1,12 +1,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.ubs.training</groupId>
-  <artifactId>ubs-login-webapp</artifactId>
+  <groupId>com.thinknyx.conference</groupId>
+  <artifactId>thinknyxconf</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>ubs-login-webapp Maven Webapp</name>
-  <url>http://maven.apache.org</url>
+  <version>0.0.1</version>
+  <name>Thinknyx DevOps Conference</name>
+  <url>http://thinknyx.com/conference</url>
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -15,7 +15,16 @@
       <scope>test</scope>
     </dependency>
   </dependencies>
+  
+  <distributionManagement>
+    <repository>
+      <id>io.cloudrepo</id> <!-- Must Match the Unique Identifier in settings.xml -->
+      <name>My First Cloud Repo Repository</name>
+      <url>https://thinknyx.mycloudrepo.io/repositories/thinknyx-maven</url>
+    </repository>
+  </distributionManagement>
+  
   <build>
-    <finalName>ubs-login-webapp</finalName>
+    <finalName>devops-conference</finalName>
   </build>
 </project>

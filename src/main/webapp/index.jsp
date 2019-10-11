@@ -4,7 +4,7 @@
 </head>
 <body>
 	<h1 style="font-family: Comic Sans Ms;text-align="center";font-size:20pt;
-	color:#00FF00;>Login Page Demo</h1>
+	color:#00FF00;>ThinknyxConf'19 Demo Application</h1>
 	<form name="login" action="login.jsp">
 		Username<input type="text" name="userid" />  <br>
 		Password<input type="password" name="pswrd" /> <br>

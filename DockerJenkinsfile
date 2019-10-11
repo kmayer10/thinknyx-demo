@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+   
+    stages {
+        
+        stage ('Getting Docker Host Detail') {
+            steps {
+                copyArtifacts filter: 'docker_host', projectName: 'System Provisioning', target: '.'
+                script {
+                    // trim removes leading and trailing whitespace from the string
+                    dockerhost = readFile('docker_host').trim()
+                }
+                echo "${dockerhost}" // prints 'hotness'
+            }
+        }
+        
+        stage ('Download Docker Images'){
+            steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+                    docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxredis:v1
+                    docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxvote:v1
+                    docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxresult:v1
+                    docker -H tcp://${dockerhost}:2375 pull yogeshraheja/thinknyxworker:v1
+                    docker -H tcp://$dockerhost:2375 pull yogeshraheja/thinknyxdb:v1'''
+                }
+            }
+        
+        stage ('Creating Network'){
+            steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://${dockerhost}:2375 network ls -f "name=thinknyxnet" --format \'{{.Name}}\') == thinknyxnet ]] || docker -H tcp://${dockerhost}:2375 network create --subnet=192.168.10.0/24 thinknyxnet
+		''' }
+        }
+        
+        stage ('Starting Voting Application'){
+            steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=voting" --format \'{{.Names}}\') == voting ]] || docker -H tcp://$dockerhost:2375 run -itd --name=voting --net=thinknyxnet -p 81:80 yogeshraheja/thinknyxvote:v1
+		''' }
+        }
+        
+        stage ('Enabling Cache'){
+            steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=redis" --format \'{{.Names}}\') == redis ]] || docker -H tcp://$dockerhost:2375 run -itd --name=redis --net=thinknyxnet yogeshraheja/thinknyxredis:v1
+		''' }
+        }
+        
+        stage ('Starting Database'){
+            steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=db" --format \'{{.Names}}\') == db ]] || docker -H tcp://$dockerhost:2375 run -itd --name=db --net=thinknyxnet yogeshraheja/thinknyxdb:v1
+		''' }
+        }
+        
+        stage ('Starting Worker Node'){
+            steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=worker" --format \'{{.Names}}\') == worker ]] || docker -H tcp://$dockerhost:2375 run -itd --name=worker --net=thinknyxnet yogeshraheja/thinknyxworker:v1
+		''' }
+        }
+        
+    	stage ('Starting Display'){
+        steps {
+                sh label: '', script: '''export dockerhost=`cat docker_host`
+		[[ $(docker -H tcp://$dockerhost:2375 ps -f "name=result" --format \'{{.Names}}\') == result ]] || docker -H tcp://$dockerhost:2375 run -itd --name=result --net=thinknyxnet -p 82:80 yogeshraheja/thinknyxresult:v1
+		''' }
+        }
+    }
+}

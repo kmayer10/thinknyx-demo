@@ -1,0 +1,40 @@
+---
+
+- hosts: thinknyxconf
+  user: centos
+  become: yes
+  
+  #vars:
+   # appversion: "{{ appversion }}"
+
+  tasks:
+
+    - name: Installing Java 8
+      yum: name=java-1.8.0-openjdk state=present
+
+    - name: Download Tomcat
+      get_url: url=http://mirrors.estointernet.in/apache/tomcat/tomcat-8/v8.5.46/bin/apache-tomcat-8.5.46.tar.gz dest=/opt/apache-tomcat-8.5.46.tar.gz
+
+    - name: Extract archive
+      unarchive: 
+        src: /opt/apache-tomcat-8.5.46.tar.gz
+        dest: /opt
+        remote_src: yes
+
+    - name: Install Tomcat init script
+      copy: src=tomcat-init.sh dest=/etc/init.d/tomcat mode=0755
+
+    - name: Start Tomcat
+      systemd:
+        name: tomcat
+        enabled: yes
+        state: restarted
+
+    #- name: deleting old war
+      #file: path=/tmp/thinknyxconf.war state=absent
+
+    #- name: Downloading Application from JFrog
+      #get_url: url=https://admin.cloudrepo.io/repository/thinknyx-maven/com/thinknyx/conference/thinknyxconf/0.0.1/thinknyxconf-0.0.1.war dest=/tmp/thinknyxconf.war
+
+    - name: Copying war to tomcat webapps folder
+      copy: src="/root/.jenkins/workspace/DevOps Conference/target/devops-conference.war" dest=/opt/apache-tomcat-8.5.46/webapps/thinknyxconf.war
