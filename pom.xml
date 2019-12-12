@@ -7,6 +7,14 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>ubs-login-webapp Maven Webapp</name>
   <url>http://maven.apache.org</url>
+  
+  <properties>
+    <sonar.projectKey>kmayer10_thinknyx-demo</sonar.projectKey>
+    <sonar.organization>kmayer10</sonar.organization>
+    <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+    <sonar.login>b30b636f101206fdd3f4d1cb7e34e344b2a3226a</sonar.login>
+  </properties>
+  
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
