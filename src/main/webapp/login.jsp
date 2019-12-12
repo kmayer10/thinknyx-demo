@@ -13,6 +13,7 @@ pageEncoding="ISO-8859-1"%>
       Book name	:<input type="text" name="name"/><br/><br/>
       Author :<input type="text" name="author"/><br/><br/>
       Title :<input type="text" name="title"/><br/><br/>
+      Language :<input type="text" name="language"/><br/><br/>
       Price	:<input type="number" name="price"/><br/><br/>
       <input type="submit" value="Submit"/>
     </form>
