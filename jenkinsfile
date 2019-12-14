@@ -34,5 +34,17 @@ pipeline {
                 sh 'cp target/ubs-login-webapp.war /root/apache-tomcat-8.5.50/webapps/thinknyxconf.war'
             }
         }
+        
+        stage ('Running Regression Suite') {
+            steps {
+                sh 'echo running-Regression'
+            }
+        }
+        
+        stage ('Running Non Functional Testing Suite') {
+            steps {
+                sh 'cp target/ubs-login-webapp.war /root/apache-tomcat-8.5.50/webapps/thinknyxconf.war'
+            }
+        }
     }
 }
