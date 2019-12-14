@@ -10,7 +10,7 @@ pipeline {
         stage ('Static Scan'){
             steps {
                 withMaven(maven : 'mvn_home') {
-                    sh 'echo running-static-scan'
+                    sh 'mvn clean package sonar:sonar'
                 }
             }
         }
