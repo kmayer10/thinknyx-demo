@@ -10,7 +10,7 @@ pipeline {
         stage ('Static Scan'){
             steps {
                 withMaven(maven : 'mvn_home') {
-                    sh 'mvn verify sonar:sonar'
+                    sh 'mvn clen test sonar:sonar'
                 }
             }
         }
