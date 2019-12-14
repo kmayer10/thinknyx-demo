@@ -14,6 +14,7 @@ pageEncoding="ISO-8859-1"%>
       Author :<input type="text" name="author"/><br/><br/>
       Title :<input type="text" name="title"/><br/><br/>
       Language :<input type="text" name="language"/><br/><br/>
+      Kindle-Edition :<input type="text" name="Kindle-Edition"/><br/><br/>
       Price	:<input type="number" name="price"/><br/><br/>
       <input type="submit" value="Submit"/>
     </form>
