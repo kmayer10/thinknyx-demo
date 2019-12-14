@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+    
+    tools{
+        maven 'mvn_home'
+    }
+
+    stages {
+        
+        stage ('Static Scan'){
+            steps {
+                withMaven(maven : 'mvn_home') {
+                    sh 'mvn verify sonar:sonar'
+                }
+            }
+        }
+        
+        stage ('Packaging and Distribution') {
+            steps {
+                withMaven(maven : 'mvn_home') {
+                    sh 'mvn clean install'
+                }
+            }
+        }
+        
+        stage ('Getting List of hosts for deployment') {
+            steps {
+                sh 'echo orking on host list'
+            }
+        }
+        
+        stage ('Deploying Application on Test Environment') {
+            steps {
+                sh 'cp target/ubs-login-webapp.war /root/apache-tomcat-8.5.50/webapps/thinknyxconf.war'
+            }
+        }
+    }
+}
