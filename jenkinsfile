@@ -10,7 +10,7 @@ pipeline {
         stage ('Static Scan'){
             steps {
                 withMaven(maven : 'mvn_home') {
-                    sh 'mvn clean test sonar:sonar'
+                    sh 'echo running-static-scan'
                 }
             }
         }
@@ -25,7 +25,7 @@ pipeline {
         
         stage ('Getting List of hosts for deployment') {
             steps {
-                sh 'echo orking on host list'
+                sh 'echo getting on host list'
             }
         }
         
